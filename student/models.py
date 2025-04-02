@@ -1,6 +1,6 @@
 from django.db import models
 
-class student(models.Model):
+class Student(models.Model):
     GENDER_CHOICES = (
     ('M', 'Male'),
     ('F', 'Female'),
@@ -24,6 +24,8 @@ class Course(models.Model):
     course_code = models.CharField(max_length=10, unique=True)
     course_name = models.CharField(max_length=100)
     credits = models.PositiveIntegerField()
+    def __str__(self):
+        return f"{self.course_code} - {self.course_name}"
 
 
 class Enrollment(models.Model):
@@ -31,14 +33,16 @@ class Enrollment(models.Model):
     ('A', 'A'),
     ('B', 'B'),
     ('C', 'C'),
-    ('D', 'D'),
+    ('D', 'D'),  
     ('F', 'F'),
     ('IP', 'In Progress'),
     )
-    student = models.ForeignKey(student, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     enrollment_date = models.DateField(auto_now_add=True)
     grade = models.CharField(max_length=2, choices=GRADE_CHOICES, default='IP')
+    def __str__(self):
+        return f"{self.student} {self.course}"
 
 
 class Meta:
